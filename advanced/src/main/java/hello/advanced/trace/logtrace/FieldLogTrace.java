@@ -1,44 +1,34 @@
-package hello.advanced.trace.hellotrace;
+package hello.advanced.trace.logtrace;
 
 import hello.advanced.trace.TraceId;
 import hello.advanced.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
-/*
-* TraaceId를 파라미터로 받아
-* 동기화 하는 기능을 추가
-*
-* 하지만 로그 트레이스를 사용하는 모든 로직을
-* 변경해야 하는 문제가 있음
-*
-* */
 @Slf4j
-@Component
-public class HelloTraceV2 {
-    // 로그 추적기
-    //
+public class FieldLogTrace implements LogTrace{
 
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
+    private TraceId traceIdHolder;  // traceId 동기화, 동시성 이슈 발생
+
     // 로그 시작
     public TraceStatus begin(String message) {
-        TraceId traceId = new TraceId();
+        syncTraceId();
+        TraceId traceId = traceIdHolder;
         Long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}",traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         // 로그 출력
         return new TraceStatus(traceId, startTimeMs, message);
     }
 
-    // v2에서 추가
-    public TraceStatus beginSync(TraceId beforeTraceId, String message) {
-        TraceId nextId = beforeTraceId.createNextId();
-        Long startTimeMs = System.currentTimeMillis();
-        log.info("[{}] {}{}",nextId.getId(), addSpace(START_PREFIX, nextId.getLevel()), message);
-        // 로그 출력
-        return new TraceStatus(nextId, startTimeMs, message);
+    private void syncTraceId() {
+        if (traceIdHolder == null) {
+            traceIdHolder = new TraceId();
+        } else {
+            traceIdHolder = traceIdHolder.createNextId();
+        }
     }
 
     // 로그 정상 종료
@@ -59,13 +49,18 @@ public class HelloTraceV2 {
         }else {
             log.info("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs, e.toString());
         }
+
+        releaseTraceId();
     }
-    //level 0:
-    //level 1: |-->
-    //level 2: | |-->
-    //level 0:
-    //level 1: |<--
-    //level 2: | |<--
+
+    private void releaseTraceId() {
+        if (traceIdHolder.isFirstLevel()) {
+            traceIdHolder = null; // destroy
+        } else {
+            traceIdHolder = traceIdHolder.createPreviousId();
+        }
+    }
+
     private static String addSpace(String prefix, int level) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++) {
