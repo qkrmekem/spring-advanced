@@ -78,4 +78,27 @@ public class TemplateMethodTest {
         log.info("클래스 이름2={}",template1.getClass());
         template2.execute();
     }
+
+    @Test
+    void templateMethodV3() {
+        AbstractTemplate template1 = new AbstractTemplate() {
+            @Override
+            protected void call() {
+                log.info("비즈니스 로직1 실행");
+            }
+        };
+        // TemplateMethodTest$1라는 이름의
+        // 익명 내부 클래스를 생성해줌
+        log.info("클래스 이름1={}",template1.getClass());
+        template1.execute();
+
+        AbstractTemplate template2 = new AbstractTemplate() {
+            @Override
+            protected void call() {
+                log.info("비즈니스 로직1 실행");
+            }
+        };
+        log.info("클래스 이름2={}",template1.getClass());
+        template2.execute();
+    }
 }

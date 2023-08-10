@@ -96,6 +96,7 @@ public class ContextV1Test {
     }
 
     // 람다 사용
+    // 인터페이스에 메서드가 1개만 있을 경우 람다로 구현 가능
     @Test
     void strategyV4() {
         ContextV1 contextV1 = new ContextV1(() -> log.info("비즈니스 로직1 실행"));
