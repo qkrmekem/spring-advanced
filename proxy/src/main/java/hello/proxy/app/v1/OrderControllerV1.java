@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public interface OrderControllerV1 {
 
     // 로그 적용시에 사용
-    @GetMapping("/v1/request")
+    @GetMapping()
     // 구현체에서는 @RequestParam("itemId")을 안넣어도 되지만
     // 버전에 따라서 인터페이스에서는 이게 안먹힐 수도 있으므로
     // 인터페이스에서는 @RequestParam("itemId")와 같이 파라미터를 명시 해줘야함
