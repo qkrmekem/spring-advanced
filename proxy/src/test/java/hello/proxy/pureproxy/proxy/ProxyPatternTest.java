@@ -6,6 +6,12 @@ import hello.proxy.pureproxy.proxy.code.RealSubject;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+/*
+* 프록시 패턴과 데코레이터 패턴 모두 프록시를 사용
+* 그 둘은 사용하는 의도에 따라 나뉘는데
+* 프록시 패턴은 접근 제어(캐시, 권한 확인 등)
+ * 데코레이터는 부가 기능 수행(파라미터 값이나 반환 값 수정 등)
+* */
 @Slf4j
 public class ProxyPatternTest {
 
