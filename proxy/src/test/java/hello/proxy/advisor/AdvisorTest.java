@@ -14,6 +14,11 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 
 import java.lang.reflect.Method;
 
+/*
+* 어드바이스 - 타겟에 적용할 AOP를 말함
+* 포인트 컷 - 어드바이스를 적용할 대상을 정하는 기능을 함
+* 어드바이저 - 1 어드바이스, 1 포인트컷
+* */
 @Slf4j
 public class AdvisorTest {
 
@@ -48,12 +53,14 @@ public class AdvisorTest {
             return ClassFilter.TRUE;
         }
 
+        // 포인트 컷을 따로 만들려면 MethodMatcher를 직접 생성해줘야 함
         @Override
         public MethodMatcher getMethodMatcher() {
             return new MyMethodMatcher();
         }
     }
 
+    // MethodMatcher 직접 생성
     static class MyMethodMatcher implements MethodMatcher{
 
         private String matchName = "save";
