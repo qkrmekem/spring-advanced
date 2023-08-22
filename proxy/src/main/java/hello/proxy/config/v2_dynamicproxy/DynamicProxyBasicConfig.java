@@ -17,6 +17,7 @@ public class DynamicProxyBasicConfig {
         OrderControllerV1 proxy = (OrderControllerV1) Proxy.newProxyInstance(OrderControllerV1.class.getClassLoader(),
                 new Class[]{OrderControllerV1.class},
                 new LogTraceBasicHandler(orderControllerV1, logTrace));
+
         return proxy;
     }
 

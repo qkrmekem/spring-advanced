@@ -16,12 +16,12 @@ public class TimeMethodInterceptor implements MethodInterceptor {
     }
 
     @Override
-    public Object intercept(Object obj, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         log.info("TimeProxy 실행");
         long startTime = System.currentTimeMillis();
 
-        // CGLIB 성능상 methodProxy를 사용하는게 속도가 더 빠름
-        Object result = methodProxy.invoke(target, args);
+        // CGLIB 성능상 proxy를 사용하는게 속도가 더 빠름
+        Object result = proxy.invoke(target, args);
 
         long endTime = System.currentTimeMillis();
         long resultTime = endTime - startTime;
