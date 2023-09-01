@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FieldService {
 
+    // nameStore라는 stateful한 필드를 가지고 있음
     private String nameStore;
 
     public String logic(String name) {

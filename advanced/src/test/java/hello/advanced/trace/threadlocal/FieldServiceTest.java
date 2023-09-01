@@ -7,12 +7,14 @@ import org.junit.jupiter.api.Test;
 @Slf4j
 public class FieldServiceTest {
 
+    // 하나의 FieldService를 필드로 가지고 있음
     private FieldService fieldService = new FieldService();
 
-    // 동시성 문제 발생 X
     @Test
     void field() {
         log.info("main start");
+        // userA와 userB가 하나의 FieldService를 사용하고 있음
+        // 즉 동시성 문제가 발생할 수 있음
         Runnable userA = () -> {
             fieldService.logic("userA");
         };
