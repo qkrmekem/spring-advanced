@@ -22,7 +22,7 @@ public class AutoProxyConfig {
     /*
     * 메서드 이름이 매칭되는 빈은 모두 어드바이스가 적용됨
     * */
-//    @Bean
+    @Bean
     public Advisor advisor1(LogTrace logTrace) {
         // pointcut
         NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
@@ -42,7 +42,7 @@ public class AutoProxyConfig {
         return new DefaultPointcutAdvisor(pointcut, advice);
     }
 
-    @Bean
+//    @Bean
     public Advisor advisor3(LogTrace logTrace) {
         // pointcut
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();

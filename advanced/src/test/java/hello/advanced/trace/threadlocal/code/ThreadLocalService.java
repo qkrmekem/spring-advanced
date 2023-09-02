@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThreadLocalService {
 
+    // 필드에 쓰레드 로컬을 활용하여 쓰레드마다 별도의 저장 공간을 부여
     private ThreadLocal<String> nameStore = new ThreadLocal<>();
 
     public String logic(String name) {

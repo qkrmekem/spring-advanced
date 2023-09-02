@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 @Slf4j
 public class PackageLogTracePostProcessor implements BeanPostProcessor {
 
+    // 빈 후처리기 적용 대상을 패키지 경로로 한정시킴
     private final String basePackage;
     private final Advisor advisor;
 

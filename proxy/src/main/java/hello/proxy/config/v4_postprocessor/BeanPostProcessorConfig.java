@@ -16,11 +16,12 @@ import org.springframework.context.annotation.Import;
 @Import({AppV1Config.class, AppV2Config.class})
 public class BeanPostProcessorConfig {
 
+    // 빈 후처리기 등록
     @Bean
     public PackageLogTracePostProcessor logTracePostProcessor(LogTrace logTrace) {
         return new PackageLogTracePostProcessor("hello.proxy.app", getAdvisor(logTrace));
     }
-
+    // 어드바이저 생성
     private Advisor getAdvisor(LogTrace logTrace) {
         // pointcut
         NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
