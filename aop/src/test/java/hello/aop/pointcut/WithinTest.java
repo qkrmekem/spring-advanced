@@ -1,4 +1,4 @@
-package hello.aop;
+package hello.aop.pointcut;
 
 import hello.aop.member.MemberServiceImpl;
 import org.assertj.core.api.Assertions;
@@ -11,14 +11,10 @@ import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-* within
-* 타입(클래스)로 매칭하는 지시자
-* 타입만 만족하면 모든 메서드와 매칭
-* execution과 달리 슈퍼타입(인터페이스)으로 매칭이 불가능함
+/* Within은 execution과 달리
+* 부모타입을 지정하면 매칭되지 않고, 타겟의 타입을 정확히 매칭되어야함
 * */
 public class WithinTest {
-
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
     Method helloMethod;
 
@@ -28,35 +24,38 @@ public class WithinTest {
     }
 
     @Test
+    @DisplayName("타입을 정확하게 매칭")
     void withinExact() {
         pointcut.setExpression("within(hello.aop.member.MemberServiceImpl)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 
     @Test
+    @DisplayName("타입에 Service가 들어가 있으면 매칭")
     void withinStar() {
         pointcut.setExpression("within(hello.aop.member.*Service*)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 
     @Test
+    @DisplayName("hello.aop 밑의 모든 타입과 매칭")
     void withinSubPackage() {
         pointcut.setExpression("within(hello.aop..*)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 
+
     @Test
-    @DisplayName("타겟의 타입에만 직접 적용, 인터페이스를 설정하면 안된다.")
+    @DisplayName("within은 부모타입으로 선언이 불가능하고 정확히 타겟의 타입을 지정해야함")
     void withinSuperTypeFalse() {
         pointcut.setExpression("within(hello.aop.member.MemberService)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isFalse();
     }
 
     @Test
-    @DisplayName("execution은 타입 기반, 인터페이스 설정 가능")
+    @DisplayName("execution은 부모타입 선언이 가능")
     void executionSuperTypeTrue() {
         pointcut.setExpression("execution(* hello.aop.member.MemberService.*(..))");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
-
 }

@@ -14,7 +14,7 @@ public class Pointcuts {
     public void allService() {
     }
 
-    // allOrder && allService
+    // allOrder && allService를 활용한 포인트컷
     @Pointcut("allOrder() && allService()")
     public void orderAndService() {}
 }

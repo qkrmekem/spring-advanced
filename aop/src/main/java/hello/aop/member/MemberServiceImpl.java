@@ -1,7 +1,12 @@
 package hello.aop.member;
 
+import hello.aop.member.annotation.ClassAop;
 import hello.aop.member.annotation.MethodAop;
+import org.springframework.stereotype.Component;
 
+@ClassAop
+// AOP는 스프링 빈을 대상으로 작동하므로 컴포넌트 스캔
+@Component
 public class MemberServiceImpl implements MemberService{
     @Override
     @MethodAop("test value")
